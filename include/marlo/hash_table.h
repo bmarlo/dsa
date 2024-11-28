@@ -7,6 +7,10 @@
  */
 typedef struct hash_table_t hash_table_t;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Allocates a new hash table with the given capacity.
  * Returns the table on success or `NULL` on error.
@@ -58,3 +62,7 @@ float hash_table_load_factor(const hash_table_t* table);
  * `table` must not be reused.
  */
 void hash_table_release(hash_table_t* table);
+
+#ifdef __cplusplus
+}
+#endif

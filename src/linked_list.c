@@ -16,7 +16,7 @@ struct linked_list_t {
 
 linked_list_t* linked_list_new()
 {
-    linked_list_t* list = malloc(sizeof(linked_list_t));
+    linked_list_t* list = (linked_list_t*) malloc(sizeof(linked_list_t));
     if (list == NULL) {
         return NULL;
     }
@@ -33,7 +33,7 @@ int linked_list_push_back(linked_list_t* list, void* value)
         return -1;
     }
 
-    list_node_t* node = malloc(sizeof(list_node_t));
+    list_node_t* node = (list_node_t*) malloc(sizeof(list_node_t));
     if (node == NULL) {
         return -1;
     }
@@ -61,7 +61,7 @@ int linked_list_push_front(linked_list_t* list, void* value)
         return -1;
     }
 
-    list_node_t* node = malloc(sizeof(list_node_t));
+    list_node_t* node = (list_node_t*) malloc(sizeof(list_node_t));
     if (node == NULL) {
         return -1;
     }

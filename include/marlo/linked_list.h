@@ -12,6 +12,10 @@ typedef struct linked_list_t linked_list_t;
  */
 typedef struct list_node_t list_node_t;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Allocates a new linked list.
  * Returns the list on success or `NULL` on error.
@@ -72,3 +76,7 @@ int linked_list_remove(linked_list_t* list, const void* value);
  * `list` must not be reused.
  */
 void linked_list_release(linked_list_t* list);
+
+#ifdef __cplusplus
+}
+#endif

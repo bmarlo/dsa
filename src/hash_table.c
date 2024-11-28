@@ -26,7 +26,7 @@ struct hash_table_t {
 
 hash_table_t* hash_table_new(size_t capacity)
 {
-    hash_table_t* table = malloc(sizeof(hash_table_t));
+    hash_table_t* table = (hash_table_t*) malloc(sizeof(hash_table_t));
     if (table == NULL) {
         return NULL;
     }
@@ -36,7 +36,7 @@ hash_table_t* hash_table_new(size_t capacity)
     table->size = 0;
 
     if (capacity > 0) {
-        linked_list_t** items = malloc(capacity * sizeof(linked_list_t*));
+        linked_list_t** items = (linked_list_t**) malloc(capacity * sizeof(linked_list_t*));
         if (items == NULL) {
             free(table);
             return NULL;
@@ -73,7 +73,7 @@ static size_t hash_impl(size_t capacity, const void* key)
 static int hash_table_rehash(hash_table_t* table)
 {
     size_t new_capacity = table->capacity > 0 ? table->capacity * 2 : 1;
-    linked_list_t** new_items = malloc(new_capacity * sizeof(linked_list_t*));
+    linked_list_t** new_items = (linked_list_t**) malloc(new_capacity * sizeof(linked_list_t*));
     if (new_items == NULL) {
         return -1;
     }
@@ -94,7 +94,7 @@ static int hash_table_rehash(hash_table_t* table)
                 size_t new_pos = hash_impl(new_capacity, key);
                 linked_list_t* new_list = new_items[new_pos];
                 if (new_list == NULL) {
-                    new_list = malloc(sizeof(linked_list_t));
+                    new_list = (linked_list_t*) malloc(sizeof(linked_list_t));
                     if (new_list == NULL) {
                         free(new_items);
                         return -1;
@@ -112,7 +112,7 @@ static int hash_table_rehash(hash_table_t* table)
                     new_iter = new_iter->next;
                 }
 
-                list_node_t* new_node = malloc(sizeof(list_node_t));
+                list_node_t* new_node = (list_node_t*) malloc(sizeof(list_node_t));
                 if (new_node == NULL) {
                     for (size_t i = 0; i < new_capacity; i++) {
                         linked_list_t* new_list = new_items[i];
@@ -180,7 +180,7 @@ int hash_table_push(hash_table_t* table, const void* key, void* value)
     size_t pos = hash_table_hash(table, key);
     linked_list_t* list = table->items[pos];
     if (list == NULL) {
-        list = malloc(sizeof(linked_list_t));
+        list = (linked_list_t*) malloc(sizeof(linked_list_t));
         if (list == NULL) {
             return -1;
         }
@@ -203,7 +203,7 @@ int hash_table_push(hash_table_t* table, const void* key, void* value)
     }
 
     if (iter == NULL) {
-        list_node_t* node = malloc(sizeof(list_node_t));
+        list_node_t* node = (list_node_t*) malloc(sizeof(list_node_t));
         if (node == NULL) {
             return -1;
         }
