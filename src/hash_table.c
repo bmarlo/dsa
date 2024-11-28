@@ -8,8 +8,7 @@
 typedef struct list_node_t list_node_t;
 
 struct list_node_t {
-    const void* key;
-    void* value;
+    hash_table_item_t item;
     list_node_t* next;
 };
 
@@ -88,14 +87,28 @@ static int hash_table_rehash(hash_table_t* table)
             list_node_t* iter = list->head;
             while (iter != NULL) {
                 list_node_t* next = iter->next;
-                const void* key = iter->key;
-                void* value = iter->value;
+                const void* key = iter->item.key;
+                void* value = iter->item.value;
 
                 size_t new_pos = hash_impl(new_capacity, key);
                 linked_list_t* new_list = new_items[new_pos];
                 if (new_list == NULL) {
                     new_list = (linked_list_t*) malloc(sizeof(linked_list_t));
                     if (new_list == NULL) {
+                        for (size_t i = 0; i < new_capacity; i++) {
+                            linked_list_t* new_list = new_items[i];
+                            if (new_list != NULL) {
+                                list_node_t* new_iter = new_list->head;
+                                while (new_iter != NULL) {
+                                    list_node_t* new_next = new_iter->next;
+                                    free(new_iter);
+                                    new_iter = new_next;
+                                }
+
+                                free(new_list);
+                            }
+                        }
+
                         free(new_items);
                         return -1;
                     }
@@ -132,8 +145,8 @@ static int hash_table_rehash(hash_table_t* table)
                     return -1;
                 }
 
-                new_node->key = key;
-                new_node->value = value;
+                new_node->item.key = key;
+                new_node->item.value = value;
                 new_node->next = NULL;
 
                 if (new_tail != NULL) {
@@ -145,6 +158,17 @@ static int hash_table_rehash(hash_table_t* table)
                 }
 
                 new_list->size++;
+                iter = next;
+            }
+        }
+    }
+
+    for (size_t i = 0; i < table->capacity; i++) {
+        linked_list_t* list = table->items[i];
+        if (list != NULL) {
+            list_node_t* iter = list->head;
+            while (iter != NULL) {
+                list_node_t* next = iter->next;
                 free(iter);
                 iter = next;
             }
@@ -166,7 +190,7 @@ static size_t hash_table_hash(const hash_table_t* table, const void* key)
 
 int hash_table_push(hash_table_t* table, const void* key, void* value)
 {
-    if (table == NULL) {
+    if (table == NULL || value == NULL) {
         return -1;
     }
 
@@ -193,36 +217,33 @@ int hash_table_push(hash_table_t* table, const void* key, void* value)
     list_node_t* tail = NULL;
     list_node_t* iter = list->head;
     while (iter != NULL) {
-        if (iter->key == key) {
-            iter->value = value;
-            break;
+        if (iter->item.key == key) {
+            iter->item.value = value;
+            return 0;
         }
 
         tail = iter;
         iter = iter->next;
     }
 
-    if (iter == NULL) {
-        list_node_t* node = (list_node_t*) malloc(sizeof(list_node_t));
-        if (node == NULL) {
-            return -1;
-        }
-
-        node->key = key;
-        node->value = value;
-        node->next = NULL;
-
-        if (tail != NULL) {
-            tail->next = node;
-        }
-
-        if (list->head == NULL) {
-            list->head = node;
-        }
-
-        list->size++;
+    list_node_t* node = (list_node_t*) malloc(sizeof(list_node_t));
+    if (node == NULL) {
+        return -1;
     }
 
+    node->item.key = key;
+    node->item.value = value;
+    node->next = NULL;
+
+    if (tail != NULL) {
+        tail->next = node;
+    }
+
+    if (list->head == NULL) {
+        list->head = node;
+    }
+
+    list->size++;
     table->size++;
     return 0;
 }
@@ -238,8 +259,8 @@ void* hash_table_at(const hash_table_t* table, const void* key)
     if (list != NULL) {
         list_node_t* iter = list->head;
         while (iter != NULL) {
-            if (iter->key == key) {
-                return iter->value;
+            if (iter->item.key == key) {
+                return iter->item.value;
             }
             iter = iter->next;
         }
@@ -251,6 +272,73 @@ void* hash_table_at(const hash_table_t* table, const void* key)
 int hash_table_contains(const hash_table_t* table, const void* key)
 {
     return hash_table_at(table, key) != NULL;
+}
+
+hash_table_iterator_t hash_table_begin(const hash_table_t* table)
+{
+    hash_table_iterator_t iter;
+    iter.table = NULL;
+    iter.pos = 0;
+    iter.node = NULL;
+
+    if (hash_table_size(table) > 0) {
+        iter.table = table;
+        for (size_t i = 0; i < table->capacity; i++) {
+            linked_list_t* list = table->items[i];
+            if (list != NULL && list->head != NULL) {
+                iter.pos = i;
+                iter.node = list->head;
+                break;
+            }
+        }
+    }
+
+    return iter;
+}
+
+int hash_table_is_valid(hash_table_iterator_t iter)
+{
+    return iter.node != NULL;
+}
+
+hash_table_iterator_t hash_table_next(hash_table_iterator_t iter)
+{
+    hash_table_iterator_t next;
+    next.table = NULL;
+    next.pos = 0;
+    next.node = NULL;
+
+    if (iter.table != NULL) {
+        const list_node_t* node = (const list_node_t*) iter.node;
+        if (node != NULL) {
+            if (node->next != NULL) {
+                next.table = iter.table;
+                next.pos = iter.pos;
+                next.node = node->next;
+                return next;
+            }
+        }
+
+        for (size_t i = iter.pos + 1; i < iter.table->capacity; i++) {
+            linked_list_t* list = iter.table->items[i];
+            if (list != NULL && list->head != NULL) {
+                next.table = iter.table;
+                next.pos = i;
+                next.node = list->head;
+                return next;
+            }
+        }
+    }
+
+    return next;
+}
+
+hash_table_item_t hash_table_item(hash_table_iterator_t iter)
+{
+    hash_table_item_t item;
+    item.key = iter.node != NULL ? ((const list_node_t*) iter.node)->item.key : NULL;
+    item.value = iter.node != NULL ? ((const list_node_t*) iter.node)->item.value : NULL;
+    return item;
 }
 
 int hash_table_remove(hash_table_t* table, const void* key)
@@ -269,9 +357,13 @@ int hash_table_remove(hash_table_t* table, const void* key)
     list_node_t* iter = list->head;
     while (iter != NULL) {
         list_node_t* next = iter->next;
-        if (iter->key == key) {
+        if (iter->item.key == key) {
             if (prev != NULL) {
                 prev->next = next;
+            }
+
+            if (iter == list->head) {
+                list->head = next;
             }
 
             free(iter);
