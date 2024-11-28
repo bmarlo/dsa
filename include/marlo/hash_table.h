@@ -49,6 +49,12 @@ int hash_table_push(hash_table_t* table, const void* key, void* value);
 void* hash_table_at(const hash_table_t* table, const void* key);
 
 /**
+ * Whether the table is empty.
+ * Returns 1 if the table is empty, 0 otherwise.
+ */
+int hash_table_is_empty(const hash_table_t* table);
+
+/**
  * Whether the table contains a value for the given `key`.
  * Returns 1 if the table contains a value for the key, 0 otherwise.
  */
@@ -84,6 +90,12 @@ hash_table_item_t hash_table_item(hash_table_iterator_t iter);
  * Returns 0 on success or -1 on error (not found).
  */
 int hash_table_remove(hash_table_t* table, const void* key);
+
+/**
+ * Removes all key-value pairs from the given table.
+ * The table's capacity is not changed.
+ */
+void hash_table_clear(hash_table_t* table);
 
 /**
  * Returns the number of key-value pairs in the table.

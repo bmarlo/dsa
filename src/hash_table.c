@@ -269,6 +269,11 @@ void* hash_table_at(const hash_table_t* table, const void* key)
     return NULL;
 }
 
+int hash_table_is_empty(const hash_table_t* table)
+{
+    return hash_table_size(table) == 0;
+}
+
 int hash_table_contains(const hash_table_t* table, const void* key)
 {
     return hash_table_at(table, key) != NULL;
@@ -377,6 +382,28 @@ int hash_table_remove(hash_table_t* table, const void* key)
     }
 
     return -1;
+}
+
+void hash_table_clear(hash_table_t* table)
+{
+    if (table != NULL) {
+        for (size_t i = 0; i < table->capacity; i++) {
+            linked_list_t* list = table->items[i];
+            if (list != NULL) {
+                list_node_t* iter = list->head;
+                while (iter != NULL) {
+                    list_node_t* next = iter->next;
+                    free(iter);
+                    iter = next;
+                }
+
+                list->head = NULL;
+                list->size = 0;
+            }
+        }
+
+        table->size = 0;
+    }
 }
 
 size_t hash_table_size(const hash_table_t* table)
