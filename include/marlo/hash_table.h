@@ -8,6 +8,18 @@
 typedef struct hash_table_t hash_table_t;
 
 /**
+ * Pointer/address mode.
+ * Keys are treated as integer address values.
+ */
+#define HASH_TABLE_ADDRESS 1
+
+/**
+ * String mode.
+ * Keys must be null-terminated strings.
+ */
+#define HASH_TABLE_STRING 2
+
+/**
  * Hash table iterator type.
  */
 typedef struct hash_table_iterator_t {
@@ -29,11 +41,29 @@ extern "C" {
 #endif
 
 /**
- * Allocates a new hash table with the given capacity.
+ * Allocates a new hash table with the given capacity and mode of operation.
+ * `mode` must be either `HASH_TABLE_ADDRESS` or `HASH_TABLE_STRING`.
  * Returns the table on success or `NULL` on error.
  * The table must be deallocated with `hash_table_release()`.
  */
-hash_table_t* hash_table_new(size_t capacity);
+hash_table_t* hash_table_new(size_t capacity, int mode);
+
+/**
+ * Returns the mode of the table or -1 on error (`NULL` table).
+ */
+int hash_table_mode(const hash_table_t* table);
+
+/**
+ * Whether the table is in address mode.
+ * Returns 1 if the table's mode is `HASH_TABLE_ADDRESS`, 0 otherwise.
+ */
+int hash_table_is_address(const hash_table_t* table);
+
+/**
+ * Whether the table is in string mode.
+ * Returns 1 if the table's mode is `HASH_TABLE_STRING`, 0 otherwise.
+ */
+int hash_table_is_string(const hash_table_t* table);
 
 /**
  * Adds a key-value pair into the given table.

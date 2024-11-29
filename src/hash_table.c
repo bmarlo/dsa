@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAX_LOAD_FACTOR 0.75
 
@@ -18,18 +19,24 @@ typedef struct linked_list_t {
 } linked_list_t;
 
 struct hash_table_t {
+    int mode;
     linked_list_t** items;
     size_t capacity;
     size_t size;
 };
 
-hash_table_t* hash_table_new(size_t capacity)
+hash_table_t* hash_table_new(size_t capacity, int mode)
 {
+    if (mode != HASH_TABLE_ADDRESS && mode != HASH_TABLE_STRING) {
+        return NULL;
+    }
+
     hash_table_t* table = (hash_table_t*) malloc(sizeof(hash_table_t));
     if (table == NULL) {
         return NULL;
     }
 
+    table->mode = mode;
     table->items = NULL;
     table->capacity = capacity;
     table->size = 0;
@@ -51,18 +58,46 @@ hash_table_t* hash_table_new(size_t capacity)
     return table;
 }
 
+int hash_table_mode(const hash_table_t* table)
+{
+    if (table == NULL) {
+        return -1;
+    }
+
+    return table->mode;
+}
+
+int hash_table_is_address(const hash_table_t* table)
+{
+    return hash_table_mode(table) == HASH_TABLE_ADDRESS;
+}
+
+int hash_table_is_string(const hash_table_t* table)
+{
+    return hash_table_mode(table) == HASH_TABLE_STRING;
+}
+
 /**
  * Fowler–Noll–Vo hash.
  * Yeah, science!!1
  */
-static size_t hash_impl(size_t capacity, const void* key)
+static size_t hash_impl(int mode, size_t capacity, const void* key)
 {
     uint64_t pos = 0xcbf29ce484222325;
-    uintptr_t address = (uintptr_t) key;
-    for (size_t i = 0; i < sizeof(uintptr_t); i++) {
-        uint8_t byte = (address >> (sizeof(uintptr_t) - 1 - i) * 8) & 0xff;
-        pos *= 0x100000001b3;
-        pos ^= byte;
+    if (mode == HASH_TABLE_ADDRESS) {
+        uintptr_t address = (uintptr_t) key;
+        for (size_t i = 0; i < sizeof(uintptr_t); i++) {
+            uint8_t byte = (address >> (sizeof(uintptr_t) - 1 - i) * 8) & 0xff;
+            pos *= 0x100000001b3;
+            pos ^= byte;
+        }
+    } else {
+        const char* str = (const char*) key;
+        while (*str != '\0') {
+            uint8_t byte = *str++;
+            pos *= 0x100000001b3;
+            pos ^= byte;
+        }
     }
 
     pos %= capacity;
@@ -90,7 +125,7 @@ static int hash_table_rehash(hash_table_t* table)
                 const void* key = iter->item.key;
                 void* value = iter->item.value;
 
-                size_t new_pos = hash_impl(new_capacity, key);
+                size_t new_pos = hash_impl(table->mode, new_capacity, key);
                 linked_list_t* new_list = new_items[new_pos];
                 if (new_list == NULL) {
                     new_list = (linked_list_t*) malloc(sizeof(linked_list_t));
@@ -185,7 +220,16 @@ static int hash_table_rehash(hash_table_t* table)
 
 static size_t hash_table_hash(const hash_table_t* table, const void* key)
 {
-    return hash_impl(table->capacity, key);
+    return hash_impl(table->mode, table->capacity, key);
+}
+
+static int hash_table_equals(const hash_table_t* table, const void* key, const void* target)
+{
+    if (table->mode == HASH_TABLE_ADDRESS) {
+        return key == target;
+    }
+
+    return !strcmp((const char*) key, (const char*) target);
 }
 
 int hash_table_push(hash_table_t* table, const void* key, void* value)
@@ -217,7 +261,7 @@ int hash_table_push(hash_table_t* table, const void* key, void* value)
     list_node_t* tail = NULL;
     list_node_t* iter = list->head;
     while (iter != NULL) {
-        if (iter->item.key == key) {
+        if (hash_table_equals(table, iter->item.key, key)) {
             iter->item.value = value;
             return 0;
         }
@@ -259,7 +303,7 @@ void* hash_table_at(const hash_table_t* table, const void* key)
     if (list != NULL) {
         list_node_t* iter = list->head;
         while (iter != NULL) {
-            if (iter->item.key == key) {
+            if (hash_table_equals(table, iter->item.key, key)) {
                 return iter->item.value;
             }
             iter = iter->next;
@@ -362,7 +406,7 @@ int hash_table_remove(hash_table_t* table, const void* key)
     list_node_t* iter = list->head;
     while (iter != NULL) {
         list_node_t* next = iter->next;
-        if (iter->item.key == key) {
+        if (hash_table_equals(table, iter->item.key, key)) {
             if (prev != NULL) {
                 prev->next = next;
             }
