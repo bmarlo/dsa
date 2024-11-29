@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define RESIZE_FACTOR 2
 #define MAX_LOAD_FACTOR 0.75
 
 typedef struct list_node_t list_node_t;
@@ -106,7 +107,7 @@ static size_t hash_impl(int mode, size_t capacity, const void* key)
 
 static int hash_table_rehash(hash_table_t* table)
 {
-    size_t new_capacity = table->capacity > 0 ? table->capacity * 2 : 1;
+    size_t new_capacity = table->capacity > 0 ? table->capacity * RESIZE_FACTOR : 1;
     linked_list_t** new_items = (linked_list_t**) malloc(new_capacity * sizeof(linked_list_t*));
     if (new_items == NULL) {
         return -1;
