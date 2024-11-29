@@ -67,7 +67,8 @@ int hash_table_is_string(const hash_table_t* table);
 
 /**
  * Adds a key-value pair into the given table.
- * `value` cannot be `NULL` but `key` can.
+ * `key` can only be `NULL` in `HASH_TABLE_ADDRESS` mode.
+ * `value` cannot be `NULL`.
  * If the value already exists at the given key, it's updated.
  * Returns 0 on success or -1 on error.
  */

@@ -235,7 +235,7 @@ static int hash_table_equals(const hash_table_t* table, const void* key, const v
 
 int hash_table_push(hash_table_t* table, const void* key, const void* value)
 {
-    if (table == NULL || value == NULL) {
+    if (table == NULL || (hash_table_is_string(table) && key == NULL) || value == NULL) {
         return -1;
     }
 
@@ -295,7 +295,7 @@ int hash_table_push(hash_table_t* table, const void* key, const void* value)
 
 const void* hash_table_at(const hash_table_t* table, const void* key)
 {
-    if (!hash_table_capacity(table)) {
+    if (!hash_table_capacity(table) || (hash_table_is_string(table) && key == NULL)) {
         return NULL;
     }
 
@@ -393,7 +393,7 @@ hash_table_item_t hash_table_item(hash_table_iterator_t iter)
 
 void hash_table_remove(hash_table_t* table, const void* key)
 {
-    if (!hash_table_capacity(table)) {
+    if (!hash_table_capacity(table) || (hash_table_is_string(table) && key == NULL)) {
         return;
     }
 
