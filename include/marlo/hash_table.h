@@ -117,9 +117,9 @@ hash_table_item_t hash_table_item(hash_table_iterator_t iter);
 
 /**
  * Removes a key-value pair from the table.
- * Returns 0 on success or -1 on error (not found).
+ * Does nothing if the key doesn't exist within the table.
  */
-int hash_table_remove(hash_table_t* table, const void* key);
+void hash_table_remove(hash_table_t* table, const void* key);
 
 /**
  * Removes all key-value pairs from the given table.

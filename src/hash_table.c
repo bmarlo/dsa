@@ -390,16 +390,16 @@ hash_table_item_t hash_table_item(hash_table_iterator_t iter)
     return item;
 }
 
-int hash_table_remove(hash_table_t* table, const void* key)
+void hash_table_remove(hash_table_t* table, const void* key)
 {
     if (!hash_table_capacity(table)) {
-        return -1;
+        return;
     }
 
     size_t pos = hash_table_hash(table, key);
     linked_list_t* list = table->items[pos];
     if (list == NULL) {
-        return -1;
+        return;
     }
 
     list_node_t* prev = NULL;
@@ -418,14 +418,12 @@ int hash_table_remove(hash_table_t* table, const void* key)
             free(iter);
             list->size--;
             table->size--;
-            return 0;
+            break;
         }
 
         prev = iter;
         iter = next;
     }
-
-    return -1;
 }
 
 void hash_table_clear(hash_table_t* table)
