@@ -33,7 +33,7 @@ typedef struct hash_table_iterator_t {
  */
 typedef struct hash_table_item_t {
     const void* key;
-    void* value;
+    const void* value;
 } hash_table_item_t;
 
 #ifdef __cplusplus
@@ -71,12 +71,12 @@ int hash_table_is_string(const hash_table_t* table);
  * If the value already exists at the given key, it's updated.
  * Returns 0 on success or -1 on error.
  */
-int hash_table_push(hash_table_t* table, const void* key, void* value);
+int hash_table_push(hash_table_t* table, const void* key, const void* value);
 
 /**
  * Returns the value at the given key or `NULL` on error (not found).
  */
-void* hash_table_at(const hash_table_t* table, const void* key);
+const void* hash_table_at(const hash_table_t* table, const void* key);
 
 /**
  * Whether the table is empty.

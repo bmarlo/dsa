@@ -123,7 +123,7 @@ static int hash_table_rehash(hash_table_t* table)
             while (iter != NULL) {
                 list_node_t* next = iter->next;
                 const void* key = iter->item.key;
-                void* value = iter->item.value;
+                const void* value = iter->item.value;
 
                 size_t new_pos = hash_impl(table->mode, new_capacity, key);
                 linked_list_t* new_list = new_items[new_pos];
@@ -232,7 +232,7 @@ static int hash_table_equals(const hash_table_t* table, const void* key, const v
     return !strcmp((const char*) key, (const char*) target);
 }
 
-int hash_table_push(hash_table_t* table, const void* key, void* value)
+int hash_table_push(hash_table_t* table, const void* key, const void* value)
 {
     if (table == NULL || value == NULL) {
         return -1;
@@ -292,7 +292,7 @@ int hash_table_push(hash_table_t* table, const void* key, void* value)
     return 0;
 }
 
-void* hash_table_at(const hash_table_t* table, const void* key)
+const void* hash_table_at(const hash_table_t* table, const void* key)
 {
     if (!hash_table_capacity(table)) {
         return NULL;
