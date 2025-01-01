@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 struct list_node_t {
-    void* value;
+    const void* value;
     list_node_t* prev;
     list_node_t* next;
 };
@@ -27,9 +27,9 @@ linked_list_t* linked_list_new()
     return list;
 }
 
-int linked_list_push_back(linked_list_t* list, void* value)
+int linked_list_push_back(linked_list_t* list, const void* value)
 {
-    if (list == NULL) {
+    if (list == NULL || value == NULL) {
         return -1;
     }
 
@@ -55,9 +55,9 @@ int linked_list_push_back(linked_list_t* list, void* value)
     return 0;
 }
 
-int linked_list_push_front(linked_list_t* list, void* value)
+int linked_list_push_front(linked_list_t* list, const void* value)
 {
-    if (list == NULL) {
+    if (list == NULL || value == NULL) {
         return -1;
     }
 
@@ -103,7 +103,7 @@ const list_node_t* linked_list_previous(const list_node_t* node)
     return node != NULL ? node->prev : NULL;
 }
 
-void* linked_list_value(const list_node_t* node)
+const void* linked_list_value(const list_node_t* node)
 {
     return node != NULL ? node->value : NULL;
 }

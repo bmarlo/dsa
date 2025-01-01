@@ -25,15 +25,17 @@ linked_list_t* linked_list_new();
 
 /**
  * Adds an element to the end of the list.
+ * `value` cannot be `NULL.`
  * Returns 0 on success or -1 on error.
  */
-int linked_list_push_back(linked_list_t* list, void* value);
+int linked_list_push_back(linked_list_t* list, const void* value);
 
 /**
  * Adds an element to the beginning of the list.
+ * `value` cannot be `NULL.`
  * Returns 0 on success or -1 on error.
  */
-int linked_list_push_front(linked_list_t* list, void* value);
+int linked_list_push_front(linked_list_t* list, const void* value);
 
 /**
  * Returns the last node of the list or `NULL` on error (empty list).
@@ -58,7 +60,7 @@ const list_node_t* linked_list_previous(const list_node_t* node);
 /**
  * Returns the value of the given node.
  */
-void* linked_list_value(const list_node_t* node);
+const void* linked_list_value(const list_node_t* node);
 
 /**
  * Returns the number of elements in the given list.
