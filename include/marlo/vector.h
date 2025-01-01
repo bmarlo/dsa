@@ -19,13 +19,20 @@ extern "C" {
 vector_t* vector_new(size_t capacity);
 
 /**
- * Pushes a value to the back of the given vector.
+ * Adds an element to the end of the vector.
+ * `value` cannot be `NULL`.
  * Returns 0 on success or -1 on error.
  */
 int vector_push(vector_t* vector, const void* value);
 
 /**
- * Returns the value at the given index or `NULL` on error (out of bounds).
+ * Removes and returns the last element from the vector.
+ * Returns `NULL` on error (empty vector).
+ */
+const void* vector_pop(vector_t* vector);
+
+/**
+ * Returns the element at the given index or `NULL` on error (out of bounds).
  */
 const void* vector_at(const vector_t* vector, size_t pos);
 
@@ -36,13 +43,13 @@ const void* vector_at(const vector_t* vector, size_t pos);
 int vector_is_empty(const vector_t* vector);
 
 /**
- * Removes the value at the given position from the vector, shifting all values
- * to the right of it by one position to the left.
+ * Removes the element at the given position from the vector, shifting all
+ * values to the right of it by one position to the left.
  */
 void vector_remove(vector_t* vector, size_t pos);
 
 /**
- * Removes all values from the given vector.
+ * Removes all elements from the vector, setting its size to zero.
  * The vector's capacity is not changed.
  */
 void vector_clear(vector_t* vector);

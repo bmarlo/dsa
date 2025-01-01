@@ -40,7 +40,7 @@ vector_t* vector_new(size_t capacity)
 
 int vector_push(vector_t* vector, const void* value)
 {
-    if (vector == NULL) {
+    if (vector == NULL || value == NULL) {
         return -1;
     }
 
@@ -67,6 +67,18 @@ int vector_push(vector_t* vector, const void* value)
     vector->values[vector->size] = value;
     vector->size++;
     return 0;
+}
+
+const void* vector_pop(vector_t* vector)
+{
+    if (vector_is_empty(vector)) {
+        return NULL;
+    }
+
+    const void* value = vector->values[vector->size - 1];
+    vector->values[vector->size - 1] = NULL;
+    vector->size--;
+    return value;
 }
 
 const void* vector_at(const vector_t* vector, size_t pos)
