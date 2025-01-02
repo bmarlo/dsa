@@ -92,6 +92,11 @@ size_t linked_list_size(const linked_list_t* list);
 void linked_list_remove(linked_list_t* list, const void* value);
 
 /**
+ * Removes all elements from the list.
+ */
+void linked_list_clear(linked_list_t* list);
+
+/**
  * Deallocates the given list.
  * `list` must not be reused.
  */

@@ -38,8 +38,7 @@ const void* stack_pop(stack_t* stack);
 int stack_is_empty(const stack_t* stack);
 
 /**
- * Removes all elements from the stack, setting its size to zero.
- * The stack's capacity is not changed.
+ * Removes all elements from the stack.
  */
 void stack_clear(stack_t* stack);
 
