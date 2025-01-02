@@ -38,6 +38,24 @@ int linked_list_push_back(linked_list_t* list, const void* value);
 int linked_list_push_front(linked_list_t* list, const void* value);
 
 /**
+ * Removes and returns the last element from the list.
+ * Returns `NULL` on error (empty list).
+ */
+const void* linked_list_pop_back(linked_list_t* list);
+
+/**
+ * Removes and returns the first element from the list.
+ * Returns `NULL` on error (empty list).
+ */
+const void* linked_list_pop_front(linked_list_t* list);
+
+/**
+ * Whether the list is empty.
+ * Returns 1 if the list is empty, 0 otherwise.
+ */
+int linked_list_is_empty(const linked_list_t* list);
+
+/**
  * Returns the last node of the list or `NULL` on error (empty list).
  */
 const list_node_t* linked_list_back(const linked_list_t* list);
@@ -69,9 +87,9 @@ size_t linked_list_size(const linked_list_t* list);
 
 /**
  * Removes an element from the list.
- * Returns 0 on success or -1 on error (not found).
+ * Does nothing if the value doesn't exist within the list.
  */
-int linked_list_remove(linked_list_t* list, const void* value);
+void linked_list_remove(linked_list_t* list, const void* value);
 
 /**
  * Deallocates the given list.

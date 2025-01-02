@@ -83,6 +83,59 @@ int linked_list_push_front(linked_list_t* list, const void* value)
     return 0;
 }
 
+const void* linked_list_pop_back(linked_list_t* list)
+{
+    if (linked_list_is_empty(list)) {
+        return NULL;
+    }
+
+    list_node_t* tail = list->tail;
+    const void* value = tail->value;
+    list_node_t* prev = tail->prev;
+
+    if (prev != NULL) {
+        prev->next = NULL;
+    }
+
+    if (tail == list->head) {
+        list->head = NULL;
+    }
+
+    free(tail);
+    list->tail = prev;
+    list->size--;
+    return value;
+}
+
+const void* linked_list_pop_front(linked_list_t* list)
+{
+    if (linked_list_is_empty(list)) {
+        return NULL;
+    }
+
+    list_node_t* head = list->head;
+    const void* value = head->value;
+    list_node_t* next = head->next;
+
+    if (next != NULL) {
+        next->prev = NULL;
+    }
+
+    if (head == list->tail) {
+        list->tail = NULL;
+    }
+
+    free(head);
+    list->head = next;
+    list->size--;
+    return value;
+}
+
+int linked_list_is_empty(const linked_list_t* list)
+{
+    return linked_list_size(list) == 0;
+}
+
 const list_node_t* linked_list_back(const linked_list_t* list)
 {
     return list != NULL ? list->tail : NULL;
@@ -113,10 +166,10 @@ size_t linked_list_size(const linked_list_t* list)
     return list != NULL ? list->size : 0;
 }
 
-int linked_list_remove(linked_list_t* list, const void* value)
+void linked_list_remove(linked_list_t* list, const void* value)
 {
     if (list == NULL) {
-        return -1;
+        return;
     }
 
     list_node_t* prev = NULL;
@@ -142,14 +195,12 @@ int linked_list_remove(linked_list_t* list, const void* value)
 
             list->size--;
             free(iter);
-            return 0;
+            break;
         }
 
         prev = iter;
         iter = next;
     }
-
-    return -1;
 }
 
 void linked_list_release(linked_list_t* list)
