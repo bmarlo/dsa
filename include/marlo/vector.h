@@ -44,7 +44,7 @@ int vector_is_empty(const vector_t* vector);
 
 /**
  * Removes the element at the given position from the vector, shifting all
- * values to the right of it by one position to the left.
+ * elements to the right of it by one position to the left.
  */
 void vector_remove(vector_t* vector, size_t pos);
 
@@ -55,7 +55,7 @@ void vector_remove(vector_t* vector, size_t pos);
 void vector_clear(vector_t* vector);
 
 /**
- * Returns the number of values in the vector.
+ * Returns the number of elements in the vector.
  */
 size_t vector_size(const vector_t* vector);
 

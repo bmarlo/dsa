@@ -19,6 +19,7 @@ endfunction()
 add_library(dsa STATIC
     src/hash_table.c
     src/linked_list.c
+    src/stack.c
     src/vector.c
 )
 
