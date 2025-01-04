@@ -1,20 +1,20 @@
 #include "marlo/stack.h"
-#include "marlo/vector.h"
+#include "marlo/deque.h"
 
 #include <stdlib.h>
 
 struct stack_t {
-    vector_t* values;
+    deque_t* values;
 };
 
-stack_t* stack_new()
+stack_t* stack_new(size_t capacity)
 {
     stack_t* stack = (stack_t*) malloc(sizeof(stack_t));
     if (stack == NULL) {
         return NULL;
     }
 
-    vector_t* values = vector_new(0);
+    deque_t* values = deque_new(capacity);
     if (values == NULL) {
         free(stack);
         return NULL;
@@ -30,25 +30,25 @@ int stack_push(stack_t* stack, const void* value)
         return -1;
     }
 
-    return vector_push(stack->values, value);
+    return deque_push_back(stack->values, value);
 }
 
 const void* stack_pop(stack_t* stack)
 {
-    if (stack_is_empty(stack)) {
+    if (stack == NULL) {
         return NULL;
     }
 
-    return vector_pop(stack->values);
+    return deque_pop_back(stack->values);
 }
 
 const void* stack_peek(stack_t* stack)
 {
-    if (stack_is_empty(stack)) {
+    if (stack == NULL) {
         return NULL;
     }
 
-    return vector_at(stack->values, stack_size(stack) - 1);
+    return deque_back(stack->values);
 }
 
 int stack_is_empty(const stack_t* stack)
@@ -59,19 +59,19 @@ int stack_is_empty(const stack_t* stack)
 void stack_clear(stack_t* stack)
 {
     if (stack != NULL) {
-        vector_clear(stack->values);
+        deque_clear(stack->values);
     }
 }
 
 size_t stack_size(const stack_t* stack)
 {
-    return stack != NULL ? vector_size(stack->values) : 0;
+    return stack != NULL ? deque_size(stack->values) : 0;
 }
 
 void stack_release(stack_t* stack)
 {
     if (stack != NULL) {
-        vector_release(stack->values);
+        deque_release(stack->values);
         free(stack);
     }
 }

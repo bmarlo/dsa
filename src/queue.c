@@ -1,20 +1,20 @@
 #include "marlo/queue.h"
-#include "marlo/linked_list.h"
+#include "marlo/deque.h"
 
 #include <stdlib.h>
 
 struct queue_t {
-    linked_list_t* values;
+    deque_t* values;
 };
 
-queue_t* queue_new()
+queue_t* queue_new(size_t capacity)
 {
     queue_t* queue = (queue_t*) malloc(sizeof(queue_t));
     if (queue == NULL) {
         return NULL;
     }
 
-    linked_list_t* values = linked_list_new();
+    deque_t* values = deque_new(capacity);
     if (values == NULL) {
         free(queue);
         return NULL;
@@ -30,26 +30,25 @@ int queue_push(queue_t* queue, const void* value)
         return -1;
     }
 
-    return linked_list_push_back(queue->values, value);
+    return deque_push_back(queue->values, value);
 }
 
 const void* queue_pop(queue_t* queue)
 {
-    if (queue_is_empty(queue)) {
+    if (queue == NULL) {
         return NULL;
     }
 
-    return linked_list_pop_front(queue->values);
+    return deque_pop_front(queue->values);
 }
 
 const void* queue_peek(queue_t* queue)
 {
-    if (queue_is_empty(queue)) {
+    if (queue == NULL) {
         return NULL;
     }
 
-    const list_node_t* node = linked_list_front(queue->values);
-    return linked_list_value(node);
+    return deque_front(queue->values);
 }
 
 int queue_is_empty(const queue_t* queue)
@@ -60,19 +59,19 @@ int queue_is_empty(const queue_t* queue)
 void queue_clear(queue_t* queue)
 {
     if (queue != NULL) {
-        linked_list_clear(queue->values);
+        deque_clear(queue->values);
     }
 }
 
 size_t queue_size(const queue_t* queue)
 {
-    return queue != NULL ? linked_list_size(queue->values) : 0;
+    return queue != NULL ? deque_size(queue->values) : 0;
 }
 
 void queue_release(queue_t* queue)
 {
     if (queue != NULL) {
-        linked_list_release(queue->values);
+        deque_release(queue->values);
         free(queue);
     }
 }

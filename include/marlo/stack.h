@@ -12,11 +12,11 @@ extern "C" {
 #endif
 
 /**
- * Allocates a new stack (aka LIFO queue).
+ * Allocates a new stack (aka LIFO queue) with the given capacity.
  * Returns the stack on success or `NULL` on error.
  * The stack must be deallocated with `stack_release()`.
  */
-stack_t* stack_new();
+stack_t* stack_new(size_t capacity);
 
 /**
  * Pushes an element to the stack.

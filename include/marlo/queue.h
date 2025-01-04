@@ -12,11 +12,11 @@ extern "C" {
 #endif
 
 /**
- * Allocates a new FIFO queue.
+ * Allocates a new FIFO queue with the given capacity.
  * Returns the queue on success or `NULL` on error.
  * The queue must be deallocated with `queue_release()`.
  */
-queue_t* queue_new();
+queue_t* queue_new(size_t capacity);
 
 /**
  * Pushes an element to the queue.
