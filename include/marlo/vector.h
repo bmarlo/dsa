@@ -49,7 +49,7 @@ int vector_is_empty(const vector_t* vector);
 void vector_remove(vector_t* vector, size_t pos);
 
 /**
- * Removes all elements from the vector, setting its size to zero.
+ * Removes all elements from the vector.
  * The vector's capacity is not changed.
  */
 void vector_clear(vector_t* vector);

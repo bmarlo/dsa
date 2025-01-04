@@ -17,6 +17,7 @@ function(c11 target)
 endfunction()
 
 add_library(dsa STATIC
+    src/deque.c
     src/hash_table.c
     src/linked_list.c
     src/queue.c
