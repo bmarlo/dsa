@@ -32,6 +32,13 @@ int stack_push(stack_t* stack, const void* value);
 const void* stack_pop(stack_t* stack);
 
 /**
+ * Returns the element at the top of the stack, the same element returned by
+ * `stack_pop()`, without removing it.
+ * Returns `NULL` on error (empty stack).
+ */
+const void* stack_peek(stack_t* stack);
+
+/**
  * Whether the stack is empty.
  * Returns 1 if the stack is empty, 0 otherwise.
  */

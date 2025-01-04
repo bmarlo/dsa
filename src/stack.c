@@ -35,16 +35,25 @@ int stack_push(stack_t* stack, const void* value)
 
 const void* stack_pop(stack_t* stack)
 {
-    if (stack == NULL) {
+    if (stack_is_empty(stack)) {
         return NULL;
     }
 
     return vector_pop(stack->values);
 }
 
+const void* stack_peek(stack_t* stack)
+{
+    if (stack_is_empty(stack)) {
+        return NULL;
+    }
+
+    return vector_at(stack->values, stack_size(stack) - 1);
+}
+
 int stack_is_empty(const stack_t* stack)
 {
-    return stack != NULL ? vector_is_empty(stack->values) : 0;
+    return stack_size(stack) == 0;
 }
 
 void stack_clear(stack_t* stack)

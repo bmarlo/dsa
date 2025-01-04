@@ -35,16 +35,26 @@ int queue_push(queue_t* queue, const void* value)
 
 const void* queue_pop(queue_t* queue)
 {
-    if (queue == NULL) {
+    if (queue_is_empty(queue)) {
         return NULL;
     }
 
     return linked_list_pop_front(queue->values);
 }
 
+const void* queue_peek(queue_t* queue)
+{
+    if (queue_is_empty(queue)) {
+        return NULL;
+    }
+
+    const list_node_t* node = linked_list_front(queue->values);
+    return linked_list_value(node);
+}
+
 int queue_is_empty(const queue_t* queue)
 {
-    return queue != NULL ? linked_list_is_empty(queue->values) : 0;
+    return queue_size(queue) == 0;
 }
 
 void queue_clear(queue_t* queue)

@@ -32,6 +32,13 @@ int queue_push(queue_t* queue, const void* value);
 const void* queue_pop(queue_t* queue);
 
 /**
+ * Returns the first element of the queue, the same element returned by
+ * `queue_pop()`, without removing it.
+ * Returns `NULL` on error (empty queue).
+ */
+const void* queue_peek(queue_t* queue);
+
+/**
  * Whether the queue is empty.
  * Returns 1 if the queue is empty, 0 otherwise.
  */
