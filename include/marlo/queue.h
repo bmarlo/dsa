@@ -36,7 +36,7 @@ const void* queue_pop(queue_t* queue);
  * `queue_pop()`, without removing it.
  * Returns `NULL` on error (empty queue).
  */
-const void* queue_peek(queue_t* queue);
+const void* queue_peek(const queue_t* queue);
 
 /**
  * Whether the queue is empty.

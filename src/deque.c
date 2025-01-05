@@ -135,7 +135,7 @@ const void* deque_pop_front(deque_t* deque)
     return value;
 }
 
-const void* deque_back(deque_t* deque)
+const void* deque_back(const deque_t* deque)
 {
     if (deque_is_empty(deque)) {
         return NULL;
@@ -145,7 +145,7 @@ const void* deque_back(deque_t* deque)
     return deque->values[pos];
 }
 
-const void* deque_front(deque_t* deque)
+const void* deque_front(const deque_t* deque)
 {
     if (deque_is_empty(deque)) {
         return NULL;

@@ -36,7 +36,7 @@ const void* stack_pop(stack_t* stack);
  * `stack_pop()`, without removing it.
  * Returns `NULL` on error (empty stack).
  */
-const void* stack_peek(stack_t* stack);
+const void* stack_peek(const stack_t* stack);
 
 /**
  * Whether the stack is empty.

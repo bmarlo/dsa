@@ -42,7 +42,7 @@ const void* stack_pop(stack_t* stack)
     return deque_pop_back(stack->values);
 }
 
-const void* stack_peek(stack_t* stack)
+const void* stack_peek(const stack_t* stack)
 {
     if (stack == NULL) {
         return NULL;

@@ -42,7 +42,7 @@ const void* queue_pop(queue_t* queue)
     return deque_pop_front(queue->values);
 }
 
-const void* queue_peek(queue_t* queue)
+const void* queue_peek(const queue_t* queue)
 {
     if (queue == NULL) {
         return NULL;
