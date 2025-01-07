@@ -1,5 +1,6 @@
 #pragma once
 
+#include "marlo/sorting.h"
 #include <stddef.h>
 
 /**
@@ -63,6 +64,12 @@ size_t vector_size(const vector_t* vector);
  * Returns the capacity of the vector.
  */
 size_t vector_capacity(const vector_t* vector);
+
+/**
+ * Sorts the vector using the given compare function.
+ * Returns 0 on success or -1 on error (invalid arguments).
+ */
+int vector_sort(vector_t* vector, compare_t compare);
 
 /**
  * Deallocates the given vector.

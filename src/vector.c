@@ -128,6 +128,49 @@ size_t vector_capacity(const vector_t* vector)
     return vector != NULL ? vector->capacity : 0;
 }
 
+static void vector_swap(vector_t* vector, size_t i, size_t j)
+{
+    const void* value = vector->values[i];
+    vector->values[i] = vector->values[j];
+    vector->values[j] = value;
+}
+
+static size_t vector_partition(vector_t* vector, size_t i, size_t j, compare_t compare)
+{
+    i--;
+    size_t pivot = j;
+    for (size_t k = i + 1; k < j; k++) {
+        if (compare(vector->values[k], vector->values[pivot]) < 0) {
+            vector_swap(vector, ++i, k);
+        }
+    }
+
+    vector_swap(vector, i + 1, j);
+    return i + 1;
+}
+
+static void vector_quicksort(vector_t* vector, size_t i, size_t j, compare_t compare)
+{
+    if (i < j) {
+        size_t pivot = vector_partition(vector, i, j, compare);
+        vector_quicksort(vector, i, pivot - 1, compare);
+        vector_quicksort(vector, pivot + 1, j, compare);
+    }
+}
+
+int vector_sort(vector_t* vector, compare_t compare)
+{
+    if (vector == NULL || compare == NULL) {
+        return -1;
+    }
+
+    if (vector->size > 1) {
+        vector_quicksort(vector, 0, vector->size - 1, compare);
+    }
+
+    return 0;
+}
+
 void vector_release(vector_t* vector)
 {
     if (vector != NULL) {
