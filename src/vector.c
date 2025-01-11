@@ -38,6 +38,28 @@ vector_t* vector_new(size_t capacity)
     return vector;
 }
 
+static int vector_resize(vector_t* vector)
+{
+    size_t new_capacity = vector->capacity > 0 ? vector->capacity * RESIZE_FACTOR : 1;
+    const void** new_values = (const void**) malloc(new_capacity * sizeof(void*));
+    if (new_values == NULL) {
+        return -1;
+    }
+
+    for (size_t i = 0; i < vector->size; i++) {
+        new_values[i] = vector->values[i];
+    }
+
+    for (size_t i = vector->size; i < new_capacity; i++) {
+        new_values[i] = NULL;
+    }
+
+    free(vector->values);
+    vector->values = new_values;
+    vector->capacity = new_capacity;
+    return 0;
+}
+
 int vector_push(vector_t* vector, const void* value)
 {
     if (vector == NULL || value == NULL) {
@@ -45,23 +67,10 @@ int vector_push(vector_t* vector, const void* value)
     }
 
     if (vector->size == vector->capacity) {
-        size_t new_capacity = vector->capacity > 0 ? vector->capacity * RESIZE_FACTOR : 1;
-        const void** new_values = (const void**) malloc(new_capacity * sizeof(void*));
-        if (new_values == NULL) {
+        int error = vector_resize(vector);
+        if (error == -1) {
             return -1;
         }
-
-        for (size_t i = 0; i < vector->size; i++) {
-            new_values[i] = vector->values[i];
-        }
-
-        for (size_t i = vector->size; i < new_capacity; i++) {
-            new_values[i] = NULL;
-        }
-
-        free(vector->values);
-        vector->values = new_values;
-        vector->capacity = new_capacity;
     }
 
     vector->values[vector->size] = value;
