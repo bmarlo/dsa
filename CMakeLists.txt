@@ -22,6 +22,7 @@ add_library(dsa STATIC
     src/linked_list.c
     src/queue.c
     src/stack.c
+    src/string.c
     src/vector.c
 )
 
