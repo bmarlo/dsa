@@ -45,16 +45,14 @@ const void* deque_pop_back(deque_t* deque);
 const void* deque_pop_front(deque_t* deque);
 
 /**
- * Returns the element at the back of the deque, the same element returned by
- * `deque_pop_back()`, without removing it.
- * Returns `NULL` on error (empty deque).
+ * Returns the element at the back of the deque without removing it, or `NULL`
+ * on error (empty deque).
  */
 const void* deque_back(const deque_t* deque);
 
 /**
- * Returns the element at the front of the deque, the same element returned by
- * `deque_pop_front()`, without removing it.
- * Returns `NULL` on error (empty deque).
+ * Returns the element at the front of the deque without removing it, or `NULL`
+ * on error (empty deque).
  */
 const void* deque_front(const deque_t* deque);
 
