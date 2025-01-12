@@ -25,7 +25,7 @@ string_t* string_new(size_t capacity);
 int string_push(string_t* string, char c);
 
 /**
- * Appends a substring.
+ * Appends a substring to the string.
  * Returns 0 on success or -1 on error.
  */
 int string_append(string_t* string, const char* str);

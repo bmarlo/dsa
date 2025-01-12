@@ -19,21 +19,20 @@ extern "C" {
 stack_t* stack_new(size_t capacity);
 
 /**
- * Pushes an element to the stack.
+ * Adds an element to the stack.
  * `value` cannot be `NULL`.
  * Returns 0 on success or -1 on error.
  */
 int stack_push(stack_t* stack, const void* value);
 
 /**
- * Pops an element from the stack.
+ * Removes and returns the element at the top of the stack.
  * Returns `NULL` on error (empty stack).
  */
 const void* stack_pop(stack_t* stack);
 
 /**
- * Returns the element at the top of the stack, the same element returned by
- * `stack_pop()`, without removing it.
+ * Returns the element at the top of the stack without removing it.
  * Returns `NULL` on error (empty stack).
  */
 const void* stack_peek(const stack_t* stack);
@@ -46,6 +45,7 @@ int stack_is_empty(const stack_t* stack);
 
 /**
  * Removes all elements from the stack.
+ * The stack's capacity is not changed.
  */
 void stack_clear(stack_t* stack);
 

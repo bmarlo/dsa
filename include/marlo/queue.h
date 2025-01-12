@@ -19,21 +19,20 @@ extern "C" {
 queue_t* queue_new(size_t capacity);
 
 /**
- * Pushes an element to the queue.
+ * Adds an element to the queue.
  * `value` cannot be `NULL`.
  * Returns 0 on success or -1 on error.
  */
 int queue_push(queue_t* queue, const void* value);
 
 /**
- * Pops an element from the queue.
+ * Removes and returns the first element from the queue.
  * Returns `NULL` on error (empty queue).
  */
 const void* queue_pop(queue_t* queue);
 
 /**
- * Returns the first element of the queue, the same element returned by
- * `queue_pop()`, without removing it.
+ * Returns the first element of the queue without removing it.
  * Returns `NULL` on error (empty queue).
  */
 const void* queue_peek(const queue_t* queue);
@@ -46,6 +45,7 @@ int queue_is_empty(const queue_t* queue);
 
 /**
  * Removes all elements from the queue.
+ * The queue's capacity is not changed.
  */
 void queue_clear(queue_t* queue);
 
