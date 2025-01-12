@@ -68,6 +68,11 @@ size_t stack_size(const stack_t* stack)
     return stack != NULL ? deque_size(stack->values) : 0;
 }
 
+size_t stack_capacity(const stack_t* stack)
+{
+    return stack != NULL ? deque_capacity(stack->values) : 0;
+}
+
 void stack_release(stack_t* stack)
 {
     if (stack != NULL) {

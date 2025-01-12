@@ -68,6 +68,11 @@ size_t queue_size(const queue_t* queue)
     return queue != NULL ? deque_size(queue->values) : 0;
 }
 
+size_t queue_capacity(const queue_t* queue)
+{
+    return queue != NULL ? deque_capacity(queue->values) : 0;
+}
+
 void queue_release(queue_t* queue)
 {
     if (queue != NULL) {

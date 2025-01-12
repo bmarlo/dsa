@@ -55,6 +55,11 @@ void stack_clear(stack_t* stack);
 size_t stack_size(const stack_t* stack);
 
 /**
+ * Returns the capacity of the stack.
+ */
+size_t stack_capacity(const stack_t* stack);
+
+/**
  * Deallocates the given stack.
  * `stack` must not be reused.
  */

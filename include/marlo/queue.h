@@ -55,6 +55,11 @@ void queue_clear(queue_t* queue);
 size_t queue_size(const queue_t* queue);
 
 /**
+ * Returns the capacity of the queue.
+ */
+size_t queue_capacity(const queue_t* queue);
+
+/**
  * Deallocates the given queue.
  * `queue` must not be reused.
  */
