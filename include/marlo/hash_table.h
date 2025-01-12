@@ -43,7 +43,7 @@ extern "C" {
 /**
  * Allocates a new hash table with the given capacity and mode of operation.
  * `mode` must be either `HASH_TABLE_ADDRESS` or `HASH_TABLE_STRING`.
- * Returns the table on success or `NULL` on error.
+ * Returns the new table on success or `NULL` on error.
  * The table must be deallocated with `hash_table_release()`.
  */
 hash_table_t* hash_table_new(size_t capacity, int mode);

@@ -13,7 +13,7 @@ extern "C" {
 
 /**
  * Allocates a new string with the given capacity.
- * Returns the string on success or `NULL` on error.
+ * Returns the new string on success or `NULL` on error.
  * The string must be deallocated with `string_release()`.
  */
 string_t* string_new(size_t capacity);

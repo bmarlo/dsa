@@ -18,7 +18,7 @@ extern "C" {
 
 /**
  * Allocates a new linked list.
- * Returns the list on success or `NULL` on error.
+ * Returns the new list on success or `NULL` on error.
  * The list must be deallocated with `linked_list_release()`.
  */
 linked_list_t* linked_list_new();
@@ -93,6 +93,7 @@ void linked_list_remove(linked_list_t* list, const void* value);
 
 /**
  * Removes all elements from the list.
+ * Previously returned nodes must not be reused.
  */
 void linked_list_clear(linked_list_t* list);
 

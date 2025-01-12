@@ -14,7 +14,7 @@ extern "C" {
 
 /**
  * Allocates a new vector with the given capacity.
- * Returns the vector on success or `NULL` on error.
+ * Returns the new vector on success or `NULL` on error.
  * The vector must be deallocated with `vector_release()`.
  */
 vector_t* vector_new(size_t capacity);

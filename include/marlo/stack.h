@@ -13,7 +13,7 @@ extern "C" {
 
 /**
  * Allocates a new stack (aka LIFO queue) with the given capacity.
- * Returns the stack on success or `NULL` on error.
+ * Returns the new stack on success or `NULL` on error.
  * The stack must be deallocated with `stack_release()`.
  */
 stack_t* stack_new(size_t capacity);

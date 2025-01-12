@@ -221,14 +221,6 @@ void linked_list_clear(linked_list_t* list)
 
 void linked_list_release(linked_list_t* list)
 {
-    if (list != NULL) {
-        list_node_t* iter = list->head;
-        while (iter != NULL) {
-            list_node_t* next = iter->next;
-            free(iter);
-            iter = next;
-        }
-
-        free(list);
-    }
+    linked_list_clear(list);
+    free(list);
 }

@@ -13,7 +13,7 @@ extern "C" {
 
 /**
  * Allocates a new deque (aka double-ended queue) with the given capacity.
- * Returns the deque on success or `NULL` on error.
+ * Returns the new deque on success or `NULL` on error.
  * The deque must be deallocated with `deque_release()`.
  */
 deque_t* deque_new(size_t capacity);
