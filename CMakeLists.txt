@@ -17,6 +17,7 @@ function(c11 target)
 endfunction()
 
 add_library(dsa STATIC
+    src/binary_heap.c
     src/binary_tree.c
     src/deque.c
     src/hash_table.c
