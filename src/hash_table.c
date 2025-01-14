@@ -239,7 +239,7 @@ int hash_table_push(hash_table_t* table, const void* key, const void* value)
         return -1;
     }
 
-    if (!hash_table_capacity(table) || hash_table_load_factor(table) > MAX_LOAD_FACTOR) {
+    if (!hash_table_capacity(table) || !(hash_table_load_factor(table) < MAX_LOAD_FACTOR)) {
         int error = hash_table_rehash(table);
         if (error == -1) {
             return -1;

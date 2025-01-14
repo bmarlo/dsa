@@ -66,7 +66,7 @@ int hash_table_is_address(const hash_table_t* table);
 int hash_table_is_string(const hash_table_t* table);
 
 /**
- * Adds a key-value pair into the given table.
+ * Adds a key-value pair into the table.
  * `key` can only be `NULL` in `HASH_TABLE_ADDRESS` mode.
  * `value` cannot be `NULL`.
  * If the value already exists at the given key, it's updated.
@@ -86,7 +86,7 @@ const void* hash_table_at(const hash_table_t* table, const void* key);
 int hash_table_is_empty(const hash_table_t* table);
 
 /**
- * Whether the table contains a value for the given `key`.
+ * Whether the table contains a value for the given key.
  * Returns 1 if the table contains a value for the key, 0 otherwise.
  */
 int hash_table_contains(const hash_table_t* table, const void* key);
@@ -123,7 +123,7 @@ hash_table_item_t hash_table_item(hash_table_iterator_t iter);
 void hash_table_remove(hash_table_t* table, const void* key);
 
 /**
- * Removes all key-value pairs from the given table.
+ * Removes all key-value pairs from the table.
  * The table's capacity is not changed.
  */
 void hash_table_clear(hash_table_t* table);
