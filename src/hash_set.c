@@ -14,7 +14,7 @@ hash_set_t* hash_set_new(size_t capacity)
         return NULL;
     }
 
-    hash_table_t* values = hash_table_new(capacity, HASH_TABLE_ADDRESS);
+    hash_table_t* values = hash_table_new(HASH_TABLE_ADDRESS, capacity);
     if (values == NULL) {
         free(set);
         return NULL;

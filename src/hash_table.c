@@ -26,7 +26,7 @@ struct hash_table_t {
     size_t size;
 };
 
-hash_table_t* hash_table_new(size_t capacity, int mode)
+hash_table_t* hash_table_new(int mode, size_t capacity)
 {
     if (mode != HASH_TABLE_ADDRESS && mode != HASH_TABLE_STRING) {
         return NULL;

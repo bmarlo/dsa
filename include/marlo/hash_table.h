@@ -41,12 +41,12 @@ extern "C" {
 #endif
 
 /**
- * Allocates a new hash table with the given capacity and mode of operation.
+ * Allocates a new hash table with the given mode of operation and capacity.
  * `mode` must be either `HASH_TABLE_ADDRESS` or `HASH_TABLE_STRING`.
  * Returns the new table on success or `NULL` on error.
  * The table must be deallocated with `hash_table_release()`.
  */
-hash_table_t* hash_table_new(size_t capacity, int mode);
+hash_table_t* hash_table_new(int mode, size_t capacity);
 
 /**
  * Returns the mode of the table or -1 on error (`NULL` table).
