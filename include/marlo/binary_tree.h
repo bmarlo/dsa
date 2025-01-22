@@ -1,5 +1,6 @@
 #pragma once
 
+#include "marlo/callback.h"
 #include <stddef.h>
 
 /**
@@ -11,6 +12,26 @@ typedef struct binary_tree_t binary_tree_t;
  * Opaque tree node type for efficient access.
  */
 typedef struct tree_node_t tree_node_t;
+
+/**
+ * In-order tree traversal.
+ */
+#define BINARY_TREE_IN_ORDER 1
+
+/**
+ * Pre-order tree traversal.
+ */
+#define BINARY_TREE_PRE_ORDER 2
+
+/**
+ * Post-order tree traversal.
+ */
+#define BINARY_TREE_POST_ORDER 3
+
+/**
+ * Level-order tree traversal.
+ */
+#define BINARY_TREE_LEVEL_ORDER 4
 
 #ifdef __cplusplus
 extern "C" {
@@ -48,6 +69,12 @@ tree_node_t* binary_tree_push_right(tree_node_t* node, const void* value);
  * Returns the value of the given node.
  */
 const void* binary_tree_value(const tree_node_t* node);
+
+/**
+ * Traverses the tree in the given order and with the given callback function.
+ * Returns 0 on success or -1 on error.
+ */
+int binary_tree_traverse(const binary_tree_t* tree, int order, callback_t on_value);
 
 /**
  * Whether the tree is empty.

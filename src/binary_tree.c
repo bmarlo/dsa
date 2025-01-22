@@ -1,5 +1,6 @@
 #include "marlo/binary_tree.h"
 #include "marlo/queue.h"
+#include "marlo/stack.h"
 
 #include <stdlib.h>
 
@@ -144,6 +145,164 @@ tree_node_t* binary_tree_push_right(tree_node_t* node, const void* value)
 const void* binary_tree_value(const tree_node_t* node)
 {
     return node != NULL ? node->value : NULL;
+}
+
+static int binary_tree_traverse_in_order(const binary_tree_t* tree, callback_t on_value)
+{
+    stack_t* stack = stack_new(0);
+    if (stack == NULL) {
+        return -1;
+    }
+
+    tree_node_t* iter = tree->root;
+    while (iter != NULL || !stack_is_empty(stack)) {
+        while (iter != NULL) {
+            int error = stack_push(stack, iter);
+            if (error == -1) {
+                stack_release(stack);
+                return -1;
+            }
+
+            iter = iter->left;
+        }
+
+        iter = (tree_node_t*) stack_pop(stack);
+        on_value(iter->value);
+        iter = iter->right;
+    }
+
+    stack_release(stack);
+    return 0;
+}
+
+static int binary_tree_traverse_pre_order(const binary_tree_t* tree, callback_t on_value)
+{
+    stack_t* stack = stack_new(0);
+    if (stack == NULL) {
+        return -1;
+    }
+
+    tree_node_t* iter = tree->root;
+    while (iter != NULL || !stack_is_empty(stack)) {
+        while (iter != NULL) {
+            on_value(iter->value);
+            int error = stack_push(stack, iter);
+            if (error == -1) {
+                stack_release(stack);
+                return -1;
+            }
+
+            iter = iter->left;
+        }
+
+        iter = (tree_node_t*) stack_pop(stack);
+        iter = iter->right;
+    }
+
+    stack_release(stack);
+    return 0;
+}
+
+static int binary_tree_traverse_post_order(const binary_tree_t* tree, callback_t on_value)
+{
+    stack_t* stack = stack_new(0);
+    if (stack == NULL) {
+        return -1;
+    }
+
+    tree_node_t* last = NULL;
+    tree_node_t* iter = tree->root;
+    while (iter != NULL || !stack_is_empty(stack)) {
+        while (iter != NULL) {
+            int error = stack_push(stack, iter);
+            if (error == -1) {
+                stack_release(stack);
+                return -1;
+            }
+
+            iter = iter->left;
+        }
+
+        iter = (tree_node_t*) stack_peek(stack);
+        if (iter->right != NULL && iter->right != last) {
+            iter = iter->right;
+        } else {
+            last = iter;
+            on_value(iter->value);
+            stack_pop(stack);
+            if (stack_is_empty(stack)) {
+                break;
+            }
+
+            iter = (tree_node_t*) stack_peek(stack);
+            iter = iter->right != NULL && iter->right != last ? iter->right : NULL;
+        }
+    }
+
+    stack_release(stack);
+    return 0;
+}
+
+static int binary_tree_traverse_level_order(const binary_tree_t* tree, callback_t on_value)
+{
+    queue_t* queue = queue_new(0);
+    if (queue == NULL) {
+        return -1;
+    }
+
+    if (tree->root != NULL) {
+        int error = queue_push(queue, tree->root);
+        if (error == -1) {
+            queue_release(queue);
+            return -1;
+        }
+    }
+
+    while (!queue_is_empty(queue)) {
+        tree_node_t* node = (tree_node_t*) queue_pop(queue);
+        on_value(node->value);
+
+        if (node->left != NULL) {
+            int error = queue_push(queue, node->left);
+            if (error == -1) {
+                queue_release(queue);
+                return -1;
+            }
+        }
+
+        if (node->right != NULL) {
+            int error = queue_push(queue, node->right);
+            if (error == -1) {
+                queue_release(queue);
+                return -1;
+            }
+        }
+    }
+
+    queue_release(queue);
+    return 0;
+}
+
+int binary_tree_traverse(const binary_tree_t* tree, int order, callback_t on_value)
+{
+    if (tree == NULL || on_value == NULL) {
+        return -1;
+    }
+
+    switch (order) {
+    case BINARY_TREE_IN_ORDER:
+        return binary_tree_traverse_in_order(tree, on_value);
+    case BINARY_TREE_PRE_ORDER:
+        return binary_tree_traverse_pre_order(tree, on_value);
+    case BINARY_TREE_POST_ORDER:
+        return binary_tree_traverse_post_order(tree, on_value);
+    case BINARY_TREE_LEVEL_ORDER:
+        return binary_tree_traverse_level_order(tree, on_value);
+    default:
+        break;
+    }
+
+    return -1;
 }
 
 int binary_tree_is_empty(const binary_tree_t* tree)
