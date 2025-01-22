@@ -3,4 +3,4 @@
 /**
  * Sorting compare function.
  */
-typedef int (*compare_t)(const void*, const void*);
+typedef int (*compare_t)(const void* one, const void* other);

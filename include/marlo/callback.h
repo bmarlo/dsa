@@ -3,4 +3,4 @@
 /**
  * Callback function.
  */
-typedef void (*callback_t)(const void*);
+typedef void (*callback_t)(const void* value);

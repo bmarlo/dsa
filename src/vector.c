@@ -99,6 +99,19 @@ const void* vector_at(const vector_t* vector, size_t pos)
     return NULL;
 }
 
+int vector_foreach(const vector_t* vector, callback_t on_value)
+{
+    if (vector == NULL || on_value == NULL) {
+        return -1;
+    }
+
+    for (size_t i = 0; i < vector->size; i++) {
+        on_value(vector->values[i]);
+    }
+
+    return 0;
+}
+
 int vector_is_empty(const vector_t* vector)
 {
     return vector_size(vector) == 0;

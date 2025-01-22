@@ -1,5 +1,6 @@
 #pragma once
 
+#include "marlo/callback.h"
 #include "marlo/sorting.h"
 #include <stddef.h>
 
@@ -36,6 +37,13 @@ const void* vector_pop(vector_t* vector);
  * Returns the element at the given index or `NULL` on error (out of bounds).
  */
 const void* vector_at(const vector_t* vector, size_t pos);
+
+/**
+ * Iterates through all the elements of the vector using the given callback
+ * function for each element/value.
+ * Returns 0 on success or -1 on error (invalid arguments).
+ */
+int vector_foreach(const vector_t* vector, callback_t on_value);
 
 /**
  * Whether the vector is empty.

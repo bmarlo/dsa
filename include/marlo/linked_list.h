@@ -86,7 +86,7 @@ const void* linked_list_value(const list_node_t* node);
 size_t linked_list_size(const linked_list_t* list);
 
 /**
- * Removes an element from the list.
+ * Removes the given element from the list.
  * Does nothing if the value doesn't exist within the list.
  */
 void linked_list_remove(linked_list_t* list, const void* value);
