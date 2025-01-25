@@ -94,7 +94,7 @@ int binary_heap_push(binary_heap_t* heap, const void* value)
             break;
         }
 
-        binary_heap_swap(heap, i, parent);
+        binary_heap_swap(heap, parent, i);
         i = parent;
     }
 

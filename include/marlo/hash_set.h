@@ -28,7 +28,7 @@ extern "C" {
 hash_set_t* hash_set_new(size_t capacity);
 
 /**
- * Adds an element into the set.
+ * Adds an element to the set.
  * `value` cannot be `NULL`.
  * If the value already exists within the set, it's updated.
  * Returns 0 on success or -1 on error.
