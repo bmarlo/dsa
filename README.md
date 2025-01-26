@@ -11,10 +11,10 @@ void foobar_handler(const char* s);
 
 typedef void (*handler_t)(const char* s);
 
-typedef struct container_t {
+typedef struct context_t {
     const char* path;
     handler_t handler;
-} container_t;
+} context_t;
 
 int main(int argc, char** argv)
 {
@@ -29,19 +29,19 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    container_t root;
+    context_t root;
     root.path = "/";
     root.handler = root_handler;
 
-    container_t foo;
+    context_t foo;
     foo.path = "/foo";
     foo.handler = foo_handler;
 
-    container_t bar;
+    context_t bar;
     bar.path = "/bar";
     bar.handler = bar_handler;
 
-    container_t foobar;
+    context_t foobar;
     foobar.path = "/foobar";
     foobar.handler = foobar_handler;
 
@@ -57,14 +57,14 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    container_t* result = (container_t*) hash_table_at(table, argv[1]);
+    context_t* result = (context_t*) hash_table_at(table, argv[1]);
     if (result == NULL) {
         printf("handler not found, available handlers are:\n");
         hash_table_iterator_t iter = hash_table_begin(table);
         while (hash_table_is_valid(iter)) {
             hash_table_item_t item = hash_table_item(iter);
-            container_t* container = (container_t*) item.value;
-            printf("%s\n", container->path);
+            context_t* context = (context_t*) item.value;
+            printf("%s\n", context->path);
             iter = hash_table_next(iter);
         }
 
