@@ -1,3 +1,9 @@
+## Description
+
+Implementation of a few common data structures as a C library.
+
+The data structures can store arbitrary data, represented by `const void*`.
+
 ## Usage
 
 ```C
